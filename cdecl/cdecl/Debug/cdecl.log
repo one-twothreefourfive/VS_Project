@@ -1,0 +1,16 @@
+﻿生成启动时间为 2018-6-29 16:21:00。
+     1>项目“C:\Users\kf88\Desktop\算法\cdecl\cdecl\cdecl.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt cdecl.cpp
+         cdecl.cpp
+     1>c:\users\kf88\desktop\算法\cdecl\cdecl\cdecl.cpp(36): error C2757: “tan”: 具有该名称的符号已存在，因此该名称不能用作命名空间名称
+     1>c:\users\kf88\desktop\算法\cdecl\cdecl\cdecl.cpp(37): error C2143: 语法错误 : 缺少“;”(在“this”的前面)
+     1>c:\users\kf88\desktop\算法\cdecl\cdecl\cdecl.cpp(37): error C2059: 语法错误:“this”
+     1>c:\users\kf88\desktop\算法\cdecl\cdecl\cdecl.cpp(44): error C2653: “tan”: 不是类或命名空间名称
+     1>c:\users\kf88\desktop\算法\cdecl\cdecl\cdecl.cpp(44): error C2589: “this”:“::”右边的非法标记
+     1>c:\users\kf88\desktop\算法\cdecl\cdecl\cdecl.cpp(44): error C2059: 语法错误:“::”
+     1>已完成生成项目“C:\Users\kf88\Desktop\算法\cdecl\cdecl\cdecl.vcxproj”(Build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:00.36
