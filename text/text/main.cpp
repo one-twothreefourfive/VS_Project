@@ -7,9 +7,8 @@
 #include	<stdlib.h>
 #include	<iostream>
 
+
 #define C_PLUS_PLUS_CHAR_POINTER 1
-
-
 #if C_PLUS_PLUS_CHAR_POINTER
 #if 1
 //using namespace std;
