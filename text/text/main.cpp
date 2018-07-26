@@ -20,6 +20,10 @@ int main()
 	int y[8] = { 2, 4, 6, 8, 10, 12, 14, 16 };
 	int *y_pter = y;
 
+	char *str1 = "abcdefdf";
+	char *str2 = "abcdefdf";
+	char *str3 = "abcdefdfg";
+
 	std::cout << "Value of x variable: ";
 	std::cout << x << std::endl;
 
@@ -58,6 +62,21 @@ int main()
 
 	std::cout << "Value of &y_pter variable: ";
 	std::cout << &y_pter << std::endl;
+
+	if ((void *)str1 == (void *)str2)
+	{
+		std::cout << "(void *)str1 == (void *)str2" << std::endl;
+	}
+	else
+	{
+		std::cout << "(void *)str1 != (void *)str2" << std::endl;
+	}
+	std::cout << "Value of (void *)str1 variable: ";
+	std::cout << (void *)str1 << std::endl;
+	std::cout << "Value of (void *)str2 variable: ";
+	std::cout << (void *)str2 << std::endl;
+	std::cout << "Value of (void *)str3 variable: ";
+	std::cout << (void *)str3 << std::endl;
 
 	return 0;
 }
