@@ -8,7 +8,62 @@
 #include	<iostream>
 
 
-#define C_PLUS_PLUS_CHAR_POINTER 1
+//#define C_PLUS_PLUS_CHAR_POINTER 1
+#define C_PLUS_PLUS_ALLOCATED_MB_AND_KB_TOTOL 1
+
+unsigned long  uiaCAPTURE[2][10];
+int main()
+{
+	unsigned char i, j, sm_unit;
+	unsigned int temp1 =0,temp2=0;
+	unsigned long mean=0,temp;
+
+	uiaCAPTURE[0][0] = ;
+	uiaCAPTURE[0][0] = ;
+	uiaCAPTURE[0][0] = ;
+
+	sm_unit = 0;
+#if 0
+	for (i = 0; i < FILTER_SIZE - 1; i++) {						// Ã°ÅÝÅÅÐòÇóÖµ						
+		for (j = i; j < FILTER_SIZE - 1; j++) {
+			if (uiaCAPTURE[sm_unit][j] > uiaCAPTURE[sm_unit][j + 1]) {
+				temp = uiaCAPTURE[sm_unit][j];
+				uiaCAPTURE[sm_unit][j] = uiaCAPTURE[sm_unit][j + 1];
+				uiaCAPTURE[sm_unit][j + 1] = temp;
+			}
+		}
+	}
+#else
+	for (i = 0; i < FILTER_SIZE - 1; i++) {						// Ã°ÅÝÅÅÐòÇóÖµ						
+		for (j = 0; j < (FILTER_SIZE - 1 - i); j++) {
+			if (ulaCAPTURE[sm_unit][j] > ulaCAPTURE[sm_unit][j + 1]) {
+				temp = ulaCAPTURE[sm_unit][j];
+				ulaCAPTURE[sm_unit][j] = ulaCAPTURE[sm_unit][j + 1];
+				ulaCAPTURE[sm_unit][j + 1] = temp;
+			}
+			watch_dog();
+		}
+	}
+
+#endif
+}
+
+#if C_PLUS_PLUS_ALLOCATED_MB_AND_KB_TOTOL
+int main()
+{
+#if KB_DEFINE
+	int KB=0;
+	while(malloc(1 << 10)) ++KB;
+	printf("Allocated %d KB totol\n", KB);
+#else
+	int MB = 0;
+	while (malloc(1 << 20)) ++MB;
+	printf("Allocated %d MB totol\n", MB);
+#endif
+	return 0;
+}
+#endif
+
 #if C_PLUS_PLUS_CHAR_POINTER
 #if 1
 //using namespace std;
