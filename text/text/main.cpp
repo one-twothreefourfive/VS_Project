@@ -9,44 +9,84 @@
 
 
 //#define C_PLUS_PLUS_CHAR_POINTER 1
-#define C_PLUS_PLUS_ALLOCATED_MB_AND_KB_TOTOL 1
+//#define C_PLUS_PLUS_ALLOCATED_MB_AND_KB_TOTOL 1
+//#define C_PLUS_PLUS_NUMBER_ORDER 1
+#define C_PLUS_PLUS_MEMORY_ALIGNMENT 1
 
-unsigned long  uiaCAPTURE[2][10];
+#if C_PLUS_PLUS_MEMORY_ALIGNMENT
+union {
+	char a[10];
+	int i;
+}u;
+
+void main()
+{
+	int *p = (int *)&(u.a[1]);
+	*p = 17;	/*内存未对齐，总线错误！*/
+
+	printf("*p == %d \n", *p);
+	printf("&(u.a[0]) == %d \n", &(u.a[0]));
+	printf("&(u.a[1]) == %d \n", &(u.a[1]));
+	//printf("sizeof(u) == %d \n", sizeof(u));
+}
+#endif
+
+#if C_PLUS_PLUS_NUMBER_ORDER
+#define FILTER_SIZE 10
+unsigned long  ulaCAPTURE[2][FILTER_SIZE];
 int main()
 {
 	unsigned char i, j, sm_unit;
 	unsigned int temp1 =0,temp2=0;
 	unsigned long mean=0,temp;
 
-	uiaCAPTURE[0][0] = ;
-	uiaCAPTURE[0][0] = ;
-	uiaCAPTURE[0][0] = ;
-
 	sm_unit = 0;
+
+	ulaCAPTURE[0][0] = 5;
+	ulaCAPTURE[0][1] = 2;
+	ulaCAPTURE[0][2] = 5;
+	ulaCAPTURE[0][3] = 10;
+	ulaCAPTURE[0][4] = 4;
+	ulaCAPTURE[0][5] = 77;
+	ulaCAPTURE[0][6] = 1345;
+	ulaCAPTURE[0][7] = 13;
+	ulaCAPTURE[0][8] = 323;
+	ulaCAPTURE[0][9] = 32;
+
 #if 0
-	for (i = 0; i < FILTER_SIZE - 1; i++) {						// 冒泡排序求值						
+	for (i = 0; i < FILTER_SIZE - 1; i++) {						// ‘错误’的冒泡排序求值						
 		for (j = i; j < FILTER_SIZE - 1; j++) {
-			if (uiaCAPTURE[sm_unit][j] > uiaCAPTURE[sm_unit][j + 1]) {
-				temp = uiaCAPTURE[sm_unit][j];
-				uiaCAPTURE[sm_unit][j] = uiaCAPTURE[sm_unit][j + 1];
-				uiaCAPTURE[sm_unit][j + 1] = temp;
+			if (ulaCAPTURE[sm_unit][j] > ulaCAPTURE[sm_unit][j + 1]) {
+				temp = ulaCAPTURE[sm_unit][j];
+				ulaCAPTURE[sm_unit][j] = ulaCAPTURE[sm_unit][j + 1];
+				ulaCAPTURE[sm_unit][j + 1] = temp;
 			}
 		}
 	}
 #else
-	for (i = 0; i < FILTER_SIZE - 1; i++) {						// 冒泡排序求值						
+	for (i = 0; i < FILTER_SIZE - 1; i++) {						// ‘正确’的冒泡排序求值						
 		for (j = 0; j < (FILTER_SIZE - 1 - i); j++) {
 			if (ulaCAPTURE[sm_unit][j] > ulaCAPTURE[sm_unit][j + 1]) {
 				temp = ulaCAPTURE[sm_unit][j];
 				ulaCAPTURE[sm_unit][j] = ulaCAPTURE[sm_unit][j + 1];
 				ulaCAPTURE[sm_unit][j + 1] = temp;
 			}
-			watch_dog();
 		}
 	}
-
 #endif
+
+	printf("buf0 == %d \n", ulaCAPTURE[0][0]);
+	printf("buf1 == %d \n", ulaCAPTURE[0][1]);
+	printf("buf2 == %d \n", ulaCAPTURE[0][2]);
+	printf("buf3 == %d \n", ulaCAPTURE[0][3]);
+	printf("buf4 == %d \n", ulaCAPTURE[0][4]);
+	printf("buf5 == %d \n", ulaCAPTURE[0][5]);
+	printf("buf6 == %d \n", ulaCAPTURE[0][6]);
+	printf("buf7 == %d \n", ulaCAPTURE[0][7]);
+	printf("buf8 == %d \n", ulaCAPTURE[0][8]);
+	printf("buf9 == %d \n", ulaCAPTURE[0][9]);
 }
+#endif
 
 #if C_PLUS_PLUS_ALLOCATED_MB_AND_KB_TOTOL
 int main()
