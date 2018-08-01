@@ -11,7 +11,26 @@
 //#define C_PLUS_PLUS_CHAR_POINTER 1
 //#define C_PLUS_PLUS_ALLOCATED_MB_AND_KB_TOTOL 1
 //#define C_PLUS_PLUS_NUMBER_ORDER 1
-#define C_PLUS_PLUS_MEMORY_ALIGNMENT 1
+//#define C_PLUS_PLUS_MEMORY_ALIGNMENT 1
+
+void main()
+{
+	int *p = NULL;
+	//*p = 17;	/*内存未对齐，总线错误！*/
+
+#if 0
+	if(p != NULL)
+	{
+		(void)printf("*p == %d \n", *p);
+	}
+	else
+	{
+		(void)printf("NULL \n");
+	}
+#else
+	(void)printf("*p == %d \n", p?*p:NULL);
+#endif
+}
 
 #if C_PLUS_PLUS_MEMORY_ALIGNMENT
 union {
@@ -27,7 +46,6 @@ void main()
 	printf("*p == %d \n", *p);
 	printf("&(u.a[0]) == %d \n", &(u.a[0]));
 	printf("&(u.a[1]) == %d \n", &(u.a[1]));
-	//printf("sizeof(u) == %d \n", sizeof(u));
 }
 #endif
 
