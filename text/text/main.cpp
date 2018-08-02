@@ -6,13 +6,36 @@
 #include	<ctype.h>
 #include	<stdlib.h>
 #include	<iostream>
+#include	<signal.h>
 
 
 //#define C_PLUS_PLUS_CHAR_POINTER 1
 //#define C_PLUS_PLUS_ALLOCATED_MB_AND_KB_TOTOL 1
 //#define C_PLUS_PLUS_NUMBER_ORDER 1
 //#define C_PLUS_PLUS_MEMORY_ALIGNMENT 1
+//#define C_PLUS_PLUS_MEMORY_ALIGNMENT2 1
+#define C_PLUS_PLUS_SECTION_ERROR_DEAL 1
 
+#if C_PLUS_PLUS_SECTION_ERROR_DEAL
+void handler(int s)
+{
+	//if (s == SIGBUS) printf(" now got a bus error signal\n");
+	if(s == SIGSEGV) printf(" now got a segmentation violation signal\n");
+	if(s == SIGILL) printf(" now got a illegal instrution signal\n");
+	exit(1);
+}
+void main()
+{
+	int *p = NULL;
+
+	//signal(SIGBUS,handler);
+	signal(SIGSEGV,handler);
+	signal(SIGILL,handler);
+	*p = 0;					/* 非法内存访问，会产生SIGSEGV信号，打印对应的提示信息 */
+}
+#endif
+
+#if C_PLUS_PLUS_MEMORY_ALIGNMENT2
 void main()
 {
 	int *p = NULL;
@@ -31,6 +54,7 @@ void main()
 	(void)printf("*p == %d \n", p?*p:NULL);
 #endif
 }
+#endif
 
 #if C_PLUS_PLUS_MEMORY_ALIGNMENT
 union {
