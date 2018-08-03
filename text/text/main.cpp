@@ -1,6 +1,4 @@
 
-
-
 #include	<stdio.h>
 #include	<string.h>
 #include	<ctype.h>
@@ -8,13 +6,124 @@
 #include	<iostream>
 #include	<signal.h>
 
-
+//#define C_PLUS_PLUS_JUMP
+//#define C_PLUS_PLUS_QUOTE
 //#define C_PLUS_PLUS_CHAR_POINTER 1
 //#define C_PLUS_PLUS_ALLOCATED_MB_AND_KB_TOTOL 1
 //#define C_PLUS_PLUS_NUMBER_ORDER 1
 //#define C_PLUS_PLUS_MEMORY_ALIGNMENT 1
 //#define C_PLUS_PLUS_MEMORY_ALIGNMENT2 1
-#define C_PLUS_PLUS_SECTION_ERROR_DEAL 1
+//#define C_PLUS_PLUS_SECTION_ERROR_DEAL 1
+#define C_PLUS_PLUS_BIT_MAP_DISPLAY 1
+
+
+#if C_PLUS_PLUS_BIT_MAP_DISPLAY
+#define X )*2+1
+#define _ )*2
+#define s ((((((((((((((((0			/* 用于创建16位宽的图形 */
+/* 使用上面的宏定义，程序就可以描述出对应的图形，程序的自描述能力大大加强 */
+static unsigned short stopwatch[] =
+{
+#if 1
+	s _ _ _ _ _ X X X X X _ _ _ X X _,
+	s _ _ _ _ _ X X X X X _ _ _ X X _,
+	s _ _ X X X _ _ _ _ _ X X X _ X X,
+	s _ X X _ _ _ _ _ _ _ _ _ X X _ _,
+	s _ X X _ _ _ _ _ _ _ _ _ X X _ _,
+	s X X _ _ _ _ _ _ _ _ _ _ _ X X _,
+	s X X _ _ _ _ _ _ _ _ _ _ _ X X _,
+	s X X _ X X X X X _ _ _ _ _ X X _,
+	s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+	s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+	s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+	s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+	s _ _ X X X _ _ _ _ _ X X X _ _ _,
+	s _ _ _ X X X X X X X X X _ _ _ _,
+	s _ _ _ _ _ X X X X X _ _ _ _ _ _,
+	s _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+#else
+	s _ _ _ _ _ X X X X X _ _ _ X X _,
+	s _ _ _ _ _ X X X X X _ _ _ X X _,
+	s _ _ X X X _ _ X _ _ X X X _ X X,
+	s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+	s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+	s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+	s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+	s X X X X X X X X X X X X X X X _,
+	s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+	s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+	s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+	s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+	s _ _ X X X _ _ _ _ _ X X X _ _ _,
+	s _ _ _ X X X X X X X X X _ _ _ _,
+	s _ _ _ _ _ X X X X X _ _ _ _ _ _,
+	s _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+#endif
+};
+
+#define ushort_bit_length 16
+void main()
+{
+	int buf_length;
+	buf_length = sizeof(stopwatch)/2;
+	printf("buf_length = %d\n", buf_length);
+	printf("\n");
+
+	for (int i = 0; i < buf_length; i++)
+	{
+		for (int j = 0; j < ushort_bit_length; j++)
+		{
+			if (j == 0)
+			{
+				printf("s");
+			}
+			else
+			{
+				if ((stopwatch[i] << j) & 0x8000)
+				{
+					printf("X");
+				}
+				else
+				{
+					printf("_");
+				}
+			}
+		}
+		printf("\n");
+	}
+	printf("\n");
+
+	#ifdef X
+		#undef X
+	#endif
+
+	#ifdef _
+		#undef _
+	#endif
+
+	#ifdef s
+		#undef s
+	#endif
+
+	#ifdef X
+		printf("#ifdef X able\n");
+	#else
+		printf("#undef X able\n");
+	#endif
+
+	#ifdef _
+		printf("#ifdef _ able\n");
+	#else
+		printf("#undef _ able\n");
+	#endif
+
+	#ifdef s
+		printf("#ifdef s able\n");
+	#else
+		printf("#undef s able\n");
+	#endif
+}
+#endif
 
 #if C_PLUS_PLUS_SECTION_ERROR_DEAL
 void handler(int s)
