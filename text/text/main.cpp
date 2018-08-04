@@ -5,6 +5,7 @@
 #include	<stdlib.h>
 #include	<iostream>
 #include	<signal.h>
+#include	<conio.h>
 
 //#define C_PLUS_PLUS_JUMP
 //#define C_PLUS_PLUS_QUOTE
@@ -14,8 +15,39 @@
 //#define C_PLUS_PLUS_MEMORY_ALIGNMENT 1
 //#define C_PLUS_PLUS_MEMORY_ALIGNMENT2 1
 //#define C_PLUS_PLUS_SECTION_ERROR_DEAL 1
-#define C_PLUS_PLUS_BIT_MAP_DISPLAY 1
+//#define C_PLUS_PLUS_BIT_MAP_DISPLAY 1
+#define C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND 1
 
+#if C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND
+void main() 
+{ 
+#if 1
+	char c, ch; 
+	c = _getch();		/*从键盘上读入一个字符不回显送给字符变量c*/
+	putchar(c);			/*输出该字符*/ 
+	ch = _getche();		/*从键盘上带回显的读入一个字符送给字符变量ch*/
+	putchar(ch); 
+	c = getchar();		/*从键盘读入字符直到回车结束*/
+	putchar(c);			/*显示输入的第一个字符*/ 
+
+#else
+	char c;
+	int ch;
+	std::cin >> c; 
+	std::cout << "*\n";
+
+	while (1){
+		if (_kbhit()){//如果有按键按下，则_kbhit()函数返回真
+			ch = _getch();//使用_getch()函数获取按下的键值
+			std::cout << ch;
+			if (ch == 27){ break; }//当按下ESC时循环，ESC键的键值时27.
+		}
+	}
+	system("pause");
+
+#endif
+} 
+#endif
 
 #if C_PLUS_PLUS_BIT_MAP_DISPLAY
 #define X )*2+1
