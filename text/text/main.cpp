@@ -16,7 +16,100 @@
 //#define C_PLUS_PLUS_MEMORY_ALIGNMENT2 1
 //#define C_PLUS_PLUS_SECTION_ERROR_DEAL 1
 //#define C_PLUS_PLUS_BIT_MAP_DISPLAY 1
-#define C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND 1
+//#define C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND 1
+#define C_PLUS_PLUS_RES_AD_SAMPLE 1
+
+
+#if C_PLUS_PLUS_RES_AD_SAMPLE
+/*
+ *部分数据的提前声明：
+ *1.定义FUEL_IN口的电压为sensor_voltage;
+ *2.FUEL_V口的电压为base_voltage;
+ *3.FUEL口到负载接地之间的电压为voltage;
+ *4.FUEL口到负载接地之间的电流为current;
+ *5.FUEL口到负载接地之间的电阻为res;
+ *6.单片机的基准电压 = 5V，AD精度为12位 = 4096；
+ */
+#define TEMP_GATHER_TIME_5MS 40
+#define BIT12_ADC_VALUE 4096
+#define FUEL_R_182  182
+#define FUEL_R_100K 100
+#define FUEL_R_10K  10
+#define AD_EXPAND_MULTIPLE  10
+typedef unsigned long dword;
+typedef signed long dsword;
+
+void main()
+{
+#if 0/* 方案一：整合算法后，计算得出外接电阻值(结果是扩大10倍的整形数据) */
+	dword  temp;
+	dword  fuel_voltage_ad_date;
+	dword  fuel_res_ad_date;
+	dsword temp1;
+
+	fuel_voltage_ad_date = 4096;//4000;
+	fuel_res_ad_date = 4090;//1000;
+
+	temp1 = FUEL_R_100K*fuel_voltage_ad_date + (dword)FUEL_R_10K*BIT12_ADC_VALUE - (FUEL_R_100K+FUEL_R_10K)*fuel_res_ad_date;
+	if(temp1 > 0) 
+	{
+		temp = ( (FUEL_R_100K+FUEL_R_10K)*fuel_res_ad_date - (dword)BIT12_ADC_VALUE*FUEL_R_10K ) * FUEL_R_182 * AD_EXPAND_MULTIPLE / temp1;
+
+		//if(temp > 2000)    temp = 2000;
+		//else if(temp < 20) temp = 20;
+
+		printf("temp1 = %ld\n", temp1);
+		printf("temp = %ld\n", temp);
+		printf("ok\n");
+	} 
+	else 
+	{
+		printf("error\n");
+	}
+#else/* 方案二：单步计算，每一步详细的计算说明(结果是浮点型的实际值) */
+	float  res;
+	float  fuel_voltage_ad_date;
+	float  fuel_res_ad_date;
+	float current;
+
+	float  sensor_voltage, voltage, base_voltage;
+
+	fuel_voltage_ad_date = 4000;//4000.0;
+	fuel_res_ad_date = 2000;//1000.0;
+
+	sensor_voltage = (fuel_res_ad_date / BIT12_ADC_VALUE) * 5;
+	base_voltage = (fuel_voltage_ad_date / BIT12_ADC_VALUE) * 5;
+	printf("sensor_voltage = %f\n", sensor_voltage);
+	printf("base_voltage = %f\n", base_voltage);
+
+	/* 计算FUEL口到负载接地之间的电压值voltage */
+	voltage = sensor_voltage - (5 - sensor_voltage)*FUEL_R_10K / FUEL_R_100K;
+	printf("voltage = %f\n", voltage);
+
+	/* 计算FUEL口到负载接地之间的电流值current */
+	if (base_voltage > voltage)
+	{
+		current = ((5.0 - sensor_voltage) / (FUEL_R_100K * 1000) + (base_voltage - voltage) / FUEL_R_182);
+	}
+	else
+	{
+		current = ((5.0 - sensor_voltage) / (FUEL_R_100K * 1000) - (voltage - base_voltage) / FUEL_R_182);
+	}
+	printf("current = %f\n", current);
+
+	/* 计算FUEL口到负载接地之间的电阻值res */
+	if (current > 0)
+	{
+		res = voltage / current;
+	}
+	else
+	{
+		res = 2000;/* 默认res=2000欧姆 */
+	}
+	printf("res = %f\n", res);
+#endif
+} 
+#endif
 
 #if C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND
 void main() 
