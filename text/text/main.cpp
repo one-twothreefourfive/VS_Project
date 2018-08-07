@@ -17,6 +17,7 @@
 //#define C_PLUS_PLUS_SECTION_ERROR_DEAL 1
 //#define C_PLUS_PLUS_BIT_MAP_DISPLAY 1
 //#define C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND 1
+//#define C_PLUS_PLUS_UNIX_SINGLE_CHAR_INPUT 1
 #define C_PLUS_PLUS_RES_AD_SAMPLE 1
 
 
@@ -109,6 +110,17 @@ void main()
 	printf("res = %f\n", res);
 #endif
 } 
+#endif
+
+#if C_PLUS_PLUS_UNIX_SINGLE_CHAR_INPUT
+void main()
+{
+	int c;
+	system("stty raw");			/* 终端驱动处于一次一个字符模式,此命令不支持Windows */
+	c = getchar();
+	system("stty cooked");		/* 终端驱动处又回到一次一行模式,此命令不支持Windows */
+
+}
 #endif
 
 #if C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND
