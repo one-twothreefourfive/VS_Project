@@ -20,9 +20,9 @@
 //#define C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND 1
 //#define C_PLUS_PLUS_UNIX_SINGLE_CHAR_INPUT 1
 //#define C_PLUS_PLUS_RES_AD_SAMPLE 1
-//#define C_PLUS_PLUS_HASH_FUNCTION 1
+#define C_PLUS_PLUS_HASH_FUNCTION 1
 //#define C_PLUS_PLUS_CHAR_CONVERTION_FUNCTION 1
-#define C_PLUS_PLUS_CONFUSION_PROGRAM_FUNCTION 1
+//#define C_PLUS_PLUS_CONFUSION_PROGRAM_FUNCTION 1
 
 
 #if C_PLUS_PLUS_CONFUSION_PROGRAM_FUNCTION
@@ -59,62 +59,7 @@ void main()
 	//#include <stdio.h>
 	//#include <stdlib.h>
 	//#include <string.h>
-
-#if 0
-	#define NIL 0
-	#define SAME 1
-	#define FILE_HASH 20
-	typedef struct s_hash_file 
-	{
-		char fname[20];
-		struct s_hash_file *flink;
-	} file;
-	file *file_hash_table[FILE_HASH];
-
-	int hash_filename(char *s) 
-	{
-		int length = strlen(s);
-		return (length+4*(s[0]+4*s[length/2])) / FILE_HASH;
-	}
-	file allocate_file(char *s)
-	{
-		int length = strlen(s);		// 例如：char *s="1234567890"; strlen(s)= 10 >>>> 如果要获得这个字符串的长度，则一定要使用 strlen
-		file *f_new=NULL;
-
-		f_new = (file*)malloc(length);
-		if(f_new == NULL) {
-			printf("不能分配内存空间");
-		}
-		return *f_new;
-	}
-
-	file find_filename(char *s)
-	{
-		int hash_value = hash_filename(s);
-		file f;
-		for (f = file_hash_table[hash_value]; f != NIL; f = f->flink) {
-			if(strcmp(f->fname,s) == SAME) {
-				return f;
-			}
-		}
-
-		f = allocate_file(s);
-		f->flink = file_hash_table[hash_value];
-		file_hash_table[hash_value] = f;
-		return f;
-	}
-	void main()
-	{
-		file f;
-		char *s="abcdefg";
-		memset(file_hash_table, 0, sizeof(file)*FILE_HASH); 
-
-		//f = find_filename(s);
-		printf("name=%s",f->fname);
-	}
-#else
-
-#define TABLE_SIZE (16)		// TABLE_SIZE赋值为16的倍数；否则，不能通过data & (TABLE_SIZE-1)计算索引值（data % TABLE_SIZE的方式计算索引值）
+#define TABLE_SIZE (16)		// TABLE_SIZE赋值为16或者2的幂次；否则，不能通过data & (TABLE_SIZE-1)计算索引值（data % TABLE_SIZE的方式计算索引值）
 
 typedef struct _node {
 	int data;
@@ -248,6 +193,8 @@ void main()
 		e_status = insert_data_into_hash(p_hash_table, 7723);
 		e_status = insert_data_into_hash(p_hash_table, 7724);
 		e_status = insert_data_into_hash(p_hash_table, 7725);
+		e_status = delete_data_from_hash(p_hash_table, 16139);
+		e_status = delete_data_from_hash(p_hash_table, 7724);
 		if (e_status == TRUE)
 		{
 			printf("SUCCESS \n");
@@ -258,7 +205,6 @@ void main()
 		}
 	}
 }
-#endif
 #endif
 
 #if C_PLUS_PLUS_RES_AD_SAMPLE
