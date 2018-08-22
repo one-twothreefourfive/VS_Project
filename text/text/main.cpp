@@ -6,6 +6,7 @@
 #include	<iostream>
 #include	<signal.h>
 #include	<conio.h>
+#include	<stdlib.h>
 
 //#define C_PLUS_PLUS_JUMP
 //#define C_PLUS_PLUS_QUOTE
@@ -18,8 +19,247 @@
 //#define C_PLUS_PLUS_BIT_MAP_DISPLAY 1
 //#define C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND 1
 //#define C_PLUS_PLUS_UNIX_SINGLE_CHAR_INPUT 1
-#define C_PLUS_PLUS_RES_AD_SAMPLE 1
+//#define C_PLUS_PLUS_RES_AD_SAMPLE 1
+//#define C_PLUS_PLUS_HASH_FUNCTION 1
+//#define C_PLUS_PLUS_CHAR_CONVERTION_FUNCTION 1
+#define C_PLUS_PLUS_CONFUSION_PROGRAM_FUNCTION 1
 
+
+#if C_PLUS_PLUS_CONFUSION_PROGRAM_FUNCTION
+void main()
+{
+
+	char str[] = "0123456789";
+	int   a = strlen(str); /*a=10;strlen 计算字符串的长度,以\0'为字符串结束标记.*/
+	int   b=sizeof(str); /*b=20;sizeof 计算的则是分配的数组str[20] 所占的内存空间的大小,不受里面存储的内容影响*/
+}
+#endif
+
+#if C_PLUS_PLUS_CHAR_CONVERTION_FUNCTION
+#if PROGRAM1
+extern int printf(const char*,...);
+void main()
+{
+	void* f = (void*)printf;
+	(*(int(*)(const char*,...))f)("I'm ok! \n");
+}
+#else
+extern int printf(const char*,...);
+typedef int(*p_function)(const char*,...);
+void main()
+{
+	p_function f;
+	f = &printf;
+	(*f)("I'm ok! \n");
+}
+#endif
+#endif
+
+#if C_PLUS_PLUS_HASH_FUNCTION
+	//#include <stdio.h>
+	//#include <stdlib.h>
+	//#include <string.h>
+
+#if 0
+	#define NIL 0
+	#define SAME 1
+	#define FILE_HASH 20
+	typedef struct s_hash_file 
+	{
+		char fname[20];
+		struct s_hash_file *flink;
+	} file;
+	file *file_hash_table[FILE_HASH];
+
+	int hash_filename(char *s) 
+	{
+		int length = strlen(s);
+		return (length+4*(s[0]+4*s[length/2])) / FILE_HASH;
+	}
+	file allocate_file(char *s)
+	{
+		int length = strlen(s);		// 例如：char *s="1234567890"; strlen(s)= 10 >>>> 如果要获得这个字符串的长度，则一定要使用 strlen
+		file *f_new=NULL;
+
+		f_new = (file*)malloc(length);
+		if(f_new == NULL) {
+			printf("不能分配内存空间");
+		}
+		return *f_new;
+	}
+
+	file find_filename(char *s)
+	{
+		int hash_value = hash_filename(s);
+		file f;
+		for (f = file_hash_table[hash_value]; f != NIL; f = f->flink) {
+			if(strcmp(f->fname,s) == SAME) {
+				return f;
+			}
+		}
+
+		f = allocate_file(s);
+		f->flink = file_hash_table[hash_value];
+		file_hash_table[hash_value] = f;
+		return f;
+	}
+	void main()
+	{
+		file f;
+		char *s="abcdefg";
+		memset(file_hash_table, 0, sizeof(file)*FILE_HASH); 
+
+		//f = find_filename(s);
+		printf("name=%s",f->fname);
+	}
+#else
+
+#define TABLE_SIZE (16)		// TABLE_SIZE赋值为16的倍数；否则，不能通过data & (TABLE_SIZE-1)计算索引值（data % TABLE_SIZE的方式计算索引值）
+
+typedef struct _node {
+	int data;
+	struct _node* next;
+} NODE;
+
+typedef struct _hash_table {
+	NODE* value[TABLE_SIZE];
+} HASH_TABLE;
+
+typedef enum
+{
+	FALSE = 0,
+	TRUE
+}STATUS;
+
+HASH_TABLE* create_hash_table()
+{
+	HASH_TABLE* pHashTb1 = (HASH_TABLE*)malloc(sizeof(HASH_TABLE));
+	memset(pHashTb1, 0, sizeof(HASH_TABLE));
+	return pHashTb1;
+}
+
+NODE* find_data_in_hash(HASH_TABLE* pHashTbl, int data)
+{
+	int i=0;
+	NODE* pNode;
+	if (NULL == pHashTbl)
+		return NULL;
+
+	//if (NULL == (pNode = pHashTbl->value[data % TABLE_SIZE]))
+	if (NULL == (pNode = pHashTbl->value[data & (TABLE_SIZE - 1)]))
+		return NULL;
+
+	while (pNode){
+		if (data == pNode->data)
+			return pNode;
+		pNode = pNode->next;
+		i++;
+	}
+	return NULL;
+}
+
+STATUS insert_data_into_hash(HASH_TABLE* pHashTbl, int data)
+{
+	NODE* pNode;
+	if (NULL == pHashTbl)
+		return FALSE;
+
+	//if (NULL == pHashTbl->value[data % TABLE_SIZE]){
+	if (NULL == pHashTbl->value[data & (TABLE_SIZE - 1)]){
+		pNode = (NODE*)malloc(sizeof(NODE));
+		memset(pNode, 0, sizeof(NODE));
+		pNode->data = data;
+		//pHashTbl->value[data % TABLE_SIZE] = pNode;
+		pHashTbl->value[data & (TABLE_SIZE - 1)] = pNode;
+		return TRUE;
+	}
+
+	if (NULL != find_data_in_hash(pHashTbl, data))
+		return FALSE;
+
+	//pNode = pHashTbl->value[data % TABLE_SIZE];
+	pNode = pHashTbl->value[data & (TABLE_SIZE - 1)];
+	while (NULL != pNode->next)
+		pNode = pNode->next;
+
+	pNode->next = (NODE*)malloc(sizeof(NODE));
+	memset(pNode->next, 0, sizeof(NODE));
+	pNode->next->data = data;
+	return TRUE;
+}
+
+STATUS delete_data_from_hash(HASH_TABLE* pHashTbl, unsigned long int data)
+{
+	NODE* pHead;
+	NODE* pNode;
+	//if (NULL == pHashTbl || NULL == pHashTbl->value[data % TABLE_SIZE])
+	if (NULL == pHashTbl || NULL == pHashTbl->value[data & (TABLE_SIZE - 1)])
+		return FALSE;
+
+	if (NULL == (pNode = find_data_in_hash(pHashTbl, data)))
+		return FALSE;
+
+	//if (pNode == pHashTbl->value[data % TABLE_SIZE]){
+	if (pNode == pHashTbl->value[data & (TABLE_SIZE - 1)]){
+		//pHashTbl->value[data % TABLE_SIZE] = pNode->next;
+		pHashTbl->value[data & (TABLE_SIZE - 1)] = pNode->next;
+		goto final;
+	}
+
+	//pHead = pHashTbl->value[data % TABLE_SIZE];
+	pHead = pHashTbl->value[data & (TABLE_SIZE - 1)];
+	while (pNode != pHead->next)
+		pHead = pHead->next;
+	pHead->next = pNode->next;
+
+	final:
+	free(pNode);
+	return TRUE;
+}
+
+/* the classic Times33 hash function */
+static int hash_33(char* key)
+{
+	int hash = 0;
+	while (*key) {
+		hash = (hash << 5) + hash + *key++;
+		//hash = hash * 33 + *key++;
+	}
+	return hash;
+}
+
+void main()
+{
+	NODE* p_node = NULL;
+	HASH_TABLE* p_hash_table = NULL; 
+	STATUS e_status;
+	int hash_code;
+	char input[] = "book";
+	char input2[] = "tanzheng";
+
+	p_hash_table = create_hash_table();
+	if (p_hash_table != NULL)
+	{	
+		printf("create hash_table ok,address=%p \n", p_hash_table);
+		hash_code = hash_33(input);
+		e_status = insert_data_into_hash(p_hash_table, hash_code);
+		e_status = insert_data_into_hash(p_hash_table, hash_code);
+		e_status = insert_data_into_hash(p_hash_table, 16139);
+		e_status = insert_data_into_hash(p_hash_table, 7723);
+		e_status = insert_data_into_hash(p_hash_table, 7724);
+		e_status = insert_data_into_hash(p_hash_table, 7725);
+		if (e_status == TRUE)
+		{
+			printf("SUCCESS \n");
+		}
+		else
+		{
+			printf("FAILURE \n");
+		}
+	}
+}
+#endif
+#endif
 
 #if C_PLUS_PLUS_RES_AD_SAMPLE
 /*
