@@ -20,18 +20,35 @@
 //#define C_PLUS_PLUS_GETCHAR_GETCH_GETCHE_COMMAND 1
 //#define C_PLUS_PLUS_UNIX_SINGLE_CHAR_INPUT 1
 //#define C_PLUS_PLUS_RES_AD_SAMPLE 1
-#define C_PLUS_PLUS_HASH_FUNCTION 1
+//#define C_PLUS_PLUS_HASH_FUNCTION 1
 //#define C_PLUS_PLUS_CHAR_CONVERTION_FUNCTION 1
-//#define C_PLUS_PLUS_CONFUSION_PROGRAM_FUNCTION 1
+#define C_PLUS_PLUS_ARRAY_AND_POINTER_ARGUMENTS_FUNCTION 1
 
 
-#if C_PLUS_PLUS_CONFUSION_PROGRAM_FUNCTION
+#if C_PLUS_PLUS_ARRAY_AND_POINTER_ARGUMENTS_FUNCTION
+char ga[] = "ga-text";
+
+void fuction1(char ca[])
+{
+	printf("%p,%p,%p,", &ca, &(ca[0]), &(ca[1]));
+	printf("%p \n", ++ca);
+}
+void fuction2(char *pa)
+{
+	printf("%p,%p,%p,", &pa, &(pa[0]), &(pa[1]));
+	printf("%p \n", ++pa);
+}
 void main()
 {
+	//char str[] = "0123456789";
+	//int   a = strlen(str); /*a=10;strlen 计算字符串的长度,以\0'为字符串结束标记.*/
+	//int   b=sizeof(str); /*b=20;sizeof 计算的则是分配的数组str[20] 所占的内存空间的大小,不受里面存储的内容影响*/
+	
+	printf("%p,%p,%p,%p \n", ga, &ga, &(ga[0]), &(ga[1]));
+	//std::cout << ga << std::endl;
+	fuction1(ga);
+	fuction2(ga);
 
-	char str[] = "0123456789";
-	int   a = strlen(str); /*a=10;strlen 计算字符串的长度,以\0'为字符串结束标记.*/
-	int   b=sizeof(str); /*b=20;sizeof 计算的则是分配的数组str[20] 所占的内存空间的大小,不受里面存储的内容影响*/
 }
 #endif
 
