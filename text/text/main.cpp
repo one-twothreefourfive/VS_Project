@@ -22,8 +22,62 @@
 //#define C_PLUS_PLUS_RES_AD_SAMPLE 1
 //#define C_PLUS_PLUS_HASH_FUNCTION 1
 //#define C_PLUS_PLUS_CHAR_CONVERTION_FUNCTION 1
-#define C_PLUS_PLUS_ARRAY_AND_POINTER_ARGUMENTS_FUNCTION 1
+//#define C_PLUS_PLUS_ARRAY_AND_POINTER_ARGUMENTS_FUNCTION 1
+#define C_PLUS_PLUS_TEXT_FUNCTION 1
 
+
+#if C_PLUS_PLUS_TEXT_FUNCTION
+#if 0
+int apricot[2][3][5] = {0};
+void main()
+{
+	int i = 0, j = 0, k = 0;
+
+	int (*p)[3][5] = apricot;		/* sizeof(apricot)= */
+	int (*r)[5] = apricot[i];
+	int (*t) = apricot[i][j];
+	int u = apricot[i][j][k];
+
+	printf("sizeof(apricot)=%d \n", sizeof(apricot));
+	printf("sizeof(apricot[i])=%d \n", sizeof(apricot[i]));
+	printf("sizeof(apricot[i][j])=%d \n", sizeof(apricot[i][j]));
+	printf("sizeof(apricot[i][j][k])=%d \n", sizeof(apricot[i][j][k]));
+}
+#else
+int apricot[2][3][5];
+int(*r)[5] = apricot[0];
+int* t = apricot[0][0];
+char vegetable[][9] = {
+	"beet",
+	"barley",
+	"basil",
+	"broccli",
+	"beans"
+};
+int row_1[] = { 1, 2, 2 };
+int row_2[] = { 2, 3, 4, 4, 4 };
+int row_3[] = { 2, 5, 2, 4 };
+int *wights[] = {
+	row_1,
+	row_2,
+	row_3
+};
+void main() {
+	printf("r'address=%x \n",r);
+	printf("t'address=%x \n", t);
+	printf("apricot[0]'address=%x \n", apricot[0]);
+	printf("apricot[0][0][0]'address=%x \n", &apricot[0][0][0]);
+	printf("apricot[0][1][0]'address=%x \n", &apricot[0][1][0]);
+	r++;
+	t++;
+	printf("r++'address=%x \n",r);
+	printf("t++'address=%x \n",t);
+
+	printf("vegetable string=%s \n", vegetable[0]);
+	printf("wights[0][0]=%d \n", wights[0][0]);
+}
+#endif
+#endif
 
 #if C_PLUS_PLUS_ARRAY_AND_POINTER_ARGUMENTS_FUNCTION
 char ga[] = "ga-text";
