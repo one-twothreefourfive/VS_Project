@@ -23,8 +23,47 @@
 //#define C_PLUS_PLUS_HASH_FUNCTION 1
 //#define C_PLUS_PLUS_CHAR_CONVERTION_FUNCTION 1
 //#define C_PLUS_PLUS_ARRAY_AND_POINTER_ARGUMENTS_FUNCTION 1
-#define C_PLUS_PLUS_TEXT_FUNCTION 1
+//#define C_PLUS_PLUS_TEXT_FUNCTION 1
+#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND 1
 
+
+#if C_PLUS_PLUS_POINTER_FUCTION_EXPEND
+
+void main()
+{
+	char* pea[4];
+	char* p=NULL;
+	char row_size=4, column_size=6;
+	
+	if (p == NULL) {
+		p = (char*)malloc(row_size*column_size*sizeof(char));
+		memset(p, 0, row_size*column_size*sizeof(char));
+	}
+	else {
+		return;
+	}
+	printf("p=%p \n", p);
+	for (int i = 0; i<row_size; i++) {
+		pea[i] = p + (i*column_size*sizeof(char));
+		printf("pea[%d]=%p \n", i, pea[i]);
+	}
+	free(p);
+	p = NULL;
+	for (int i = 0; i<row_size; i++) {
+		pea[i] = NULL;
+	}
+	printf("p=%p \n", p);
+	printf("&pea[0][0]=%p \n", &pea[0][0]);
+	printf("&pea[0][5]=%p \n", &pea[0][5]);
+	printf("&pea[1][0]=%p \n", &pea[1][0]);
+	printf("&pea[1][5]=%p \n", &pea[1][5]);
+	printf("&pea[2][0]=%p \n", &pea[2][0]);
+	printf("&pea[2][5]=%p \n", &pea[2][5]);
+	printf("&pea[3][0]=%p \n", &pea[3][0]);
+	printf("&pea[3][5]=%p \n", &pea[3][5]);
+}
+
+#endif
 
 #if C_PLUS_PLUS_TEXT_FUNCTION
 #if 0
