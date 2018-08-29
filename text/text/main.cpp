@@ -24,11 +24,44 @@
 //#define C_PLUS_PLUS_CHAR_CONVERTION_FUNCTION 1
 //#define C_PLUS_PLUS_ARRAY_AND_POINTER_ARGUMENTS_FUNCTION 1
 //#define C_PLUS_PLUS_TEXT_FUNCTION 1
-#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND 1
+//#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND 1
+#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND2 1
 
+#if C_PLUS_PLUS_POINTER_FUCTION_EXPEND2
+void my_function_1(int fruit[2][3][5])
+{
+	printf("function_1'fruit=%p \n", fruit);
+}
+void my_function_2(int fruit[][3][5])
+{
+	printf("function_2'fruit=%p \n", fruit);
+}
+void my_function_3(int (*fruit)[3][5])
+{
+	printf("function_3'fruit=%p \n", fruit);
+}
+
+void main()
+{
+	int apricot[2][3][5];
+	int(*p)[3][5] = apricot;
+	int(*q)[2][3][5] = &apricot;
+
+	my_function_1(apricot);
+	my_function_2(apricot);
+	my_function_3(apricot);
+
+	my_function_1(p);
+	my_function_2(p);
+	my_function_3(p);
+
+	my_function_1(*q);
+	my_function_2(*q);
+	my_function_3(*q);
+}
+#endif
 
 #if C_PLUS_PLUS_POINTER_FUCTION_EXPEND
-
 void main()
 {
 	char* pea[4];
@@ -42,11 +75,15 @@ void main()
 	else {
 		return;
 	}
-	printf("p=%p \n", p);
 	for (int i = 0; i<row_size; i++) {
 		pea[i] = p + (i*column_size*sizeof(char));
 		printf("pea[%d]=%p \n", i, pea[i]);
 	}
+	printf("p=%p \n", p);
+	printf("pea=%p \n", pea);
+	printf("&pea[0]=%p \n", &pea[0]);
+	printf("*pea=%p \n", *pea);
+
 	free(p);
 	p = NULL;
 	for (int i = 0; i<row_size; i++) {
@@ -62,7 +99,6 @@ void main()
 	printf("&pea[3][0]=%p \n", &pea[3][0]);
 	printf("&pea[3][5]=%p \n", &pea[3][5]);
 }
-
 #endif
 
 #if C_PLUS_PLUS_TEXT_FUNCTION
