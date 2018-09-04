@@ -25,7 +25,113 @@
 //#define C_PLUS_PLUS_ARRAY_AND_POINTER_ARGUMENTS_FUNCTION 1
 //#define C_PLUS_PLUS_TEXT_FUNCTION 1
 //#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND 1
-#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND2 1
+//#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND2 1
+//#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND3 1
+//#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND4 1
+#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND5 1
+
+#if C_PLUS_PLUS_POINTER_FUCTION_EXPEND5
+int current_element = 0;
+int total_element = 128;
+char *dynamic = (char*)malloc(total_element);
+void add_element(char c) {
+	char *dynamic_now;
+	if (current_element == (total_element - 1)) {
+		total_element *= 2;
+		dynamic_now = (char*)realloc(dynamic, total_element);
+		if (dynamic_now == NULL) {
+			// error('Coundn't expend the table');
+			//total_element /= 2;
+			printf("Coundn't expend the table");
+			return;
+		}
+		else {
+			dynamic = dynamic_now;
+		}
+	}
+	printf("dynamic=%p \n", dynamic);
+	current_element++;
+	dynamic[current_element] = c;
+}
+void main()
+{
+	for (int i = 0; i < 3 * 128; i++){
+		add_element(i);
+		printf("dynamic[%d]=%d \n",i,dynamic[i]);
+	}
+
+}
+#endif
+
+#if C_PLUS_PLUS_POINTER_FUCTION_EXPEND4
+char *fgets(char *str, int n, FILE *stream);
+void main()
+{
+	int size;
+	char *dynamic;
+	char input[10];
+	printf("Please enter size of array：");
+	size = atoi(fgets(input, 7, stdin));
+	dynamic = (char*)malloc(size);
+
+	dynamic[0] = 'a';
+	dynamic[size-1] = 'z';
+
+	printf("dynamic[0]=%d \n", dynamic[0]);
+	printf("dynamic[size-1]=%d \n", dynamic[size - 1]);
+	printf("size=%d \n", size);
+	/*
+	解释1：fgets函数，从标准流stdin读取一行（一般指键盘输入到缓冲区里的东西），当读取 (7-1) 个字符或者读取到换行符时，并把它存储在input所指向的字符串内
+	解释2：atoi函数是把字符串转换成整型数的一个函数,直到遇上数字或正负符号才开始做转换，而在遇到非数字或字符串结束符('\0')才结束转换，并将结果返回（atoi函数只能转换带数字的字符串）。
+	*/
+}
+#endif
+
+#if C_PLUS_PLUS_POINTER_FUCTION_EXPEND3
+#if 0
+	int(*paf())[20];		/* paf是一个函数，它返回一个指向包括20个int元素的数组的指针 */
+
+	int(*paf())[20] {
+		int(*pear)[20];
+		//pear = (int(*)[20])calloc(20, sizeof(int));
+		pear = (int(*)[20])calloc(20, sizeof(int));
+		if (!pear);//longjmp(error, 1);
+		
+		printf("pear'address=%p \n", pear);
+		return pear;
+	}
+	void main()
+	{
+		int(*result)[20];		/* 声明一个指向20个int元素的数组的指针 */
+
+		result = paf();
+		(*result)[3] = 12;
+		printf("result'address=%p \n", result);
+		printf("result[0][3]=%d \n", result[0][3]);
+		free(result);
+		result=NULL;							/*  free(起始地址的指针) 对内存进行释放 */
+		printf("result'address=%p \n", result);
+	}
+#else
+	struct a_tag {
+		int array[20];
+	}x,y;
+	struct a_tag my_function() {
+		y.array[0] = 10;
+		y.array[1] = 13;
+		return y;
+	}
+	void main()
+	{
+		x = my_function();
+		x.array[0] = 12;
+		printf("x.array[0]=%d \n", x.array[0]);
+		printf("x.array[1]=%d \n", x.array[1]);
+		printf("y.array[0]=%d \n", y.array[0]);
+		printf("y.array[1]=%d \n", y.array[1]);
+	}
+#endif
+#endif
 
 #if C_PLUS_PLUS_POINTER_FUCTION_EXPEND2
 void my_function_1(int fruit[2][3][5])
@@ -40,7 +146,6 @@ void my_function_3(int (*fruit)[3][5])
 {
 	printf("function_3'fruit=%p \n", fruit);
 }
-
 void main()
 {
 	int apricot[2][3][5];
