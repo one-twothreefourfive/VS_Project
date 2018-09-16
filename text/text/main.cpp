@@ -28,7 +28,32 @@
 //#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND2 1
 //#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND3 1
 //#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND4 1
-#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND5 1
+//#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND5 1
+#define C_PLUS_PLUS_EXPEND0 1
+
+#if C_PLUS_PLUS_EXPEND0
+class Fruit {
+public:
+	void peel();
+private:
+	int weight, calories_per_oz;
+};
+void Fruit::peel() {
+	printf("this per=%p \n", this);
+	this->weight--;
+	weight++;
+	printf("this->weight per=%p \n", &(this->weight));
+	printf("weight per=%p \n", &(weight));
+	printf("this->weight data=%d \n", this->weight);
+	printf("weight data=%d \n", weight);
+	printf("calories_per_oz per=%p \n", &(this->calories_per_oz));
+}
+Fruit apple;
+void main(){
+	printf("address of apple=%x \n",&apple);
+	apple.peel();
+}
+#endif
 
 #if C_PLUS_PLUS_POINTER_FUCTION_EXPEND5
 int current_element = 0;
