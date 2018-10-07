@@ -135,7 +135,7 @@ Fruit banana;
 Fruit *p;
 Apple *pa;
 Apple_pai apple_pai_val;
-void main() 
+void main()  
 {
 	p = new Apple_pai;
 	pa = new Apple;
