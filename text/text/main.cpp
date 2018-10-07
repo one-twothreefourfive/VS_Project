@@ -29,9 +29,133 @@
 //#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND3 1
 //#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND4 1
 //#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND5 1
-#define C_PLUS_PLUS_EXPEND0 1
+//#define C_PLUS_PLUS_CLASS_EXPEND0 1
+//#define C_PLUS_PLUS_CLASS_EXPEND1 1
+#define C_PLUS_PLUS_CLASS_EXPEND2 1
 
-#if C_PLUS_PLUS_EXPEND0
+
+#if C_PLUS_PLUS_CLASS_EXPEND2
+//小结：1、有virtual才可能发生多态现象
+// 2、不发生多态（无virtual）调用就按原类型调用
+using namespace std;
+
+class Base
+{
+public:
+	virtual void f(float x)
+	{
+		cout << "Base::f(float)" << x << endl;
+	}
+	void g(float x)
+	{
+		cout << "Base::g(float)" << x << endl;
+	}
+	void h(float x)
+	{
+		cout << "Base::h(float)" << x << endl;
+	}
+};
+class Derived : public Base
+{
+public:
+	virtual void f(float x)
+	{
+		cout << "Derived::f(float)" << x << endl;   //多态、覆盖
+	}
+	void g(int x)
+	{
+		cout << "Derived::g(int)" << x << endl;     //隐藏
+	}
+	void h(float x)
+	{
+		cout << "Derived::h(float)" << x << endl;   //隐藏
+	}
+};
+int main(void)
+{
+	Derived d;
+	Base *pb = &d;
+	Derived *pd = &d;
+	// Good : behavior depends solely on type of the object
+	pb->f(3.14f);   // Derived::f(float) 3.14
+	pd->f(3.14f);   // Derived::f(float) 3.14
+
+	// Bad : behavior depends on type of the pointer
+	pb->g(3.14f);   // Base::g(float)  3.14
+	pd->g(3.14f);   // Derived::g(int) 3 
+
+	// Bad : behavior depends on type of the pointer
+	pb->h(3.14f);   // Base::h(float) 3.14
+	pd->h(3.14f);   // Derived::h(float) 3.14
+	return 0;
+}
+#endif
+
+#if C_PLUS_PLUS_CLASS_EXPEND1
+class Fruit {
+public:
+	virtual void peel() { printf("peelling a base class fruit\n"); }
+	//void peel() { printf("peelling a base class fruit\n"); }
+	void slice();
+	void juice();
+protected:
+	int fruit_test_val;
+private:
+	int weight,calories_per_oz;
+}; 
+class Apple : public Fruit {
+public:
+	void peel() { 
+		fruit_test_val = 2;
+		//weight = 3;		// program error
+		printf("peelling an apple\n"); 
+	}
+	void make_candy_apple(float weight);
+protected:
+	int apple_test_val;
+};
+
+class Apple_pai : public Apple {
+	public:
+		void peel() {
+			fruit_test_val = 3;
+			apple_test_val = 4;
+			printf("peelling an apple pai\n");
+		}
+		void apple_pai_else() {
+			;
+		}
+};
+
+void Apple::make_candy_apple(float weight) {
+	printf("Candy apple'weight=%f\n", weight);
+}
+
+Fruit banana;
+Fruit *p;
+Apple *pa;
+Apple_pai apple_pai_val;
+void main() 
+{
+	p = new Apple_pai;
+	pa = new Apple;
+	banana.peel();
+	p->peel();
+	p->Fruit::peel();
+	pa->peel();
+	pa->Fruit::peel();
+	//p->weight = 2;
+	//pa->weight = 2;
+	//p->low = 2;
+	//pa->high = 2;
+	pa->make_candy_apple((float)2.2);
+	apple_pai_val.peel();
+	p->
+}
+
+#endif
+
+#if C_PLUS_PLUS_CLASS_EXPEND0
 class Fruit {
 public:
 	void peel();
