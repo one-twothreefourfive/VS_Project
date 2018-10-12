@@ -31,8 +31,135 @@
 //#define C_PLUS_PLUS_POINTER_FUCTION_EXPEND5 1
 //#define C_PLUS_PLUS_CLASS_EXPEND0 1
 //#define C_PLUS_PLUS_CLASS_EXPEND1 1
-#define C_PLUS_PLUS_CLASS_EXPEND2 1
+//#define C_PLUS_PLUS_CLASS_EXPEND2 1
+#define C_PLUS_PLUS_CLASS_EXPEND3 1
 
+#if C_PLUS_PLUS_CLASS_EXPEND3
+#if 1
+
+void GetPowerSet2(char nArray[], int nLength)
+{
+	int mark = 0;
+	int i = 0;
+	int nStart = 0;
+	int nEnd = (1 << nLength) -1;
+	bool bNullSet = false;
+
+	for (mark = nStart; mark <= nEnd; mark++)
+	{
+		bNullSet = true;
+		for (i = 0; i < nLength; i++)
+		{
+			if (((1<<i)&mark) != 0) //该位有元素输出
+			{
+				bNullSet = false;
+				printf("%c\t", nArray[i]);
+			}
+		}
+		if (bNullSet) //空集合
+		{
+			printf("@\t");
+		}
+		printf("\n");
+	}
+}
+void main()
+{
+	char str[50] = { 0 };
+	char *s=NULL;
+	int age, len;
+	std::cin >> str >> age;
+	std::cout << str << "的年龄：" << age << std::endl;
+	printf("%s,%d \n", str, age);
+	len = strlen(str);
+	s = new char[len+1];
+	//s = (char *)malloc(sizeof(char)* len);
+	memset(s, 0, len+1);
+	GetPowerSet2(str,len);
+}
+
+
+/*
+void string_renew_position(char *str, char *s, char len, int m, int n)
+{
+	char *buff;
+
+	buff = new char[len+1];
+	memset(buff, 0, len+1);
+
+	int i, k,l=0, j = 0;
+	for (i = 0; i < len;i++)
+	{
+		for (k = 0; k < len; k++) {
+			if (s[k] == str[i]) {
+				break;
+			}
+			if (k == len-1) {
+				s[j] = str[i];
+				j++;
+			}
+		}
+	}
+
+	for (i = 0; i < pow(2,j); i++)
+	{
+		for (k = 0; k < j; k++) {
+			if ((i >> k) & 0x01) {
+				buff[l] = s[k];
+				l++;
+			}
+		}
+		printf("%s \n", buff);
+		l = 0;
+		memset(buff, 0, len+1);
+	}
+}
+
+void main()
+{
+	char str[50] = { 0 };
+	char *s=NULL;
+	int age, len;
+	std::cin >> str >> age;
+	std::cout << str << "的年龄：" << age << std::endl;
+	printf("%s,%d \n", str, age);
+	len = strlen(str);
+	s = new char[len+1];
+	//s = (char *)malloc(sizeof(char)* len);
+	memset(s, 0, len+1);
+	string_renew_position(str,s,len, 0, 0);
+}
+*/
+#else
+void string_renew_position(char *str, char *s, char len, int m, int n)
+{
+	int i;
+	for (i = n; i < len; i++)
+	{
+		if (i > n) {
+			m--;
+		}
+		s[m] = str[i];
+		s[++m] = '\0';
+		printf("%s \n", s);
+		if (i < len-1)
+			string_renew_position(str, s, len, m, i+1);
+	}
+}
+void main()
+{
+	char str[50] = { 0 };
+	char *s;
+	int age,len;
+	std::cin >> str >> age;
+	std::cout << str<< "的年龄：" << age << std::endl;
+	printf("%s,%d \n", str, age);
+	len = strlen(str);
+	s = new char[len+1];
+	string_renew_position(str,s,len, 0, 0);
+}
+#endif
+#endif
 
 #if C_PLUS_PLUS_CLASS_EXPEND2
 //小结：1、有virtual才可能发生多态现象
@@ -76,6 +203,7 @@ int main(void)
 	Derived d;
 	Base *pb = &d;
 	Derived *pd = &d;
+
 	// Good : behavior depends solely on type of the object
 	pb->f(3.14f);   // Derived::f(float) 3.14
 	pd->f(3.14f);   // Derived::f(float) 3.14
