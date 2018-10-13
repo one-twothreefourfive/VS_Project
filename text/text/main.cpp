@@ -789,8 +789,8 @@ void main()
 
 	float  sensor_voltage, voltage, base_voltage;
 
-	fuel_voltage_ad_date = 4000;//4000.0;
-	fuel_res_ad_date = 2000;//1000.0;
+	fuel_voltage_ad_date = 999;//4000.0;	4.88
+	fuel_res_ad_date = 317;//2000.0;		1.55
 
 	sensor_voltage = (fuel_res_ad_date / BIT12_ADC_VALUE) * 5;
 	base_voltage = (fuel_voltage_ad_date / BIT12_ADC_VALUE) * 5;

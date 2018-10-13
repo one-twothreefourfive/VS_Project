@@ -3,24 +3,32 @@
 *
 *       Filename:  cdecl.c
 *
-*    Description:
+*    Description:  Expert C example program
 *
 *        Version:  1.0
-*        Created:  2012年02月28日 21时54分11秒
+*        Created:  
 *       Revision:  none
 *       Compiler:  gcc
 *
-*         Author:  MaZheng (blog.csdn.net/mazheng1989), mazheng19891019@gmail.com
-*        Company:  Dalian University Of Technology
+*         Author:  
+*        Company:  
 *
 * =====================================================================================
 */
-
-
 #include	<stdio.h>
 #include	<string.h>
 #include	<ctype.h>
 #include	<stdlib.h>
+
+#define C_PLUS_PLUS_FSM_CDECL_PROGRAM 0
+
+#if C_PLUS_PLUS_FSM_CDECL_PROGRAM
+void main()
+{
+	;
+}
+#else
+#pragma warning (disable:4996)				/* 忽略4996行的编译错误，会报strcpy为不安全函数 */
 
 #define	 MAXTOKENS 100			/*  */
 #define	MAXTOKENLEN 64			/*  */
@@ -32,21 +40,14 @@ struct token{
 };
 int top = -1;
 struct token stack[MAXTOKENS];
-
-namespace tan{ 
-	struct token this;
-}
-
+struct token thisis;				/* this会与库定义冲突，故改名thisis */ 
 
 #define	pop stack[top--]			/*  */
 #define	push(s) stack[++top]=s			/*  */
 
-using tan::this;
-
-#if 0
 enum type_tag classify_string(void)/*推断标识符的类型*/
 {
-	char *s = this.string;
+	char *s = thisis.string;
 	if (!strcmp(s, "const"))
 	{
 		strcpy(s, "read-only");
@@ -67,9 +68,9 @@ enum type_tag classify_string(void)/*推断标识符的类型*/
 	if (!strcmp(s, "enum")) return TYPE;
 	return IDENTIFIER;
 }
-void gettoken(void)/*读取下一个标记到 this*/
+void gettoken(void)/*读取下一个标记到 thisis*/
 {
-	char *p = this.string;
+	char *p = thisis.string;
 	/*略过空白字符*/
 	while ((*p = getchar()) == ' ');
 
@@ -79,40 +80,40 @@ void gettoken(void)/*读取下一个标记到 this*/
 		while (isalnum(*++p = getchar()));
 		ungetc(*p, stdin);
 		*p = '\0';
-		this.type = classify_string();
+		thisis.type = classify_string();
 		return;
 	}
 	if (*p == '*')
 	{
-		strcpy(this.string, "pointer to");
-		this.type = '*';
+		strcpy(thisis.string, "pointer to");
+		thisis.type = '*';
 		return;
 	}
-	this.string[1] = '\0';
-	this.type = *p;
+	thisis.string[1] = '\0';
+	thisis.type = *p;
 	return;
 }
 void read_to_first_identifier()
 {
 	gettoken();
-	while (this.type != IDENTIFIER)
+	while (thisis.type != IDENTIFIER)
 	{
-		push(this);
+		push(thisis);
 		gettoken();
 	}
-	printf("%s is ", this.string);
+	printf("%s is ", thisis.string);
 	gettoken();
 }
 void deal_with_arrays()
 {
-	while (this.type == '[')
+	while (thisis.type == '[')
 	{
 		printf("array ");
 		gettoken();/*数字或']'*/
-		if (isdigit(this.string[0]))
+		if (isdigit(thisis.string[0]))
 		{
 			int temp;
-			sscanf(this.string, "%d", &temp);
+			sscanf(thisis.string, "%d", &temp);
 			printf("0..%d ", temp - 1);
 			gettoken();/*读取']'*/
 		}
@@ -122,7 +123,7 @@ void deal_with_arrays()
 }
 void deal_with_function_args(){
 	/*处理函数参数*/
-	while (this.type != ')')
+	while (thisis.type != ')')
 	{
 		gettoken();
 	}
@@ -138,7 +139,7 @@ void deal_with_pointers(){
 void deal_with_declarator()
 {
 	/*处理标识符之后可能存在的数组/函数*/
-	switch (this.type)
+	switch (thisis.type)
 	{
 	case '[':
 		deal_with_arrays();
@@ -162,12 +163,13 @@ void deal_with_declarator()
 		}
 	}
 }
-#endif
+
 int main()
 {
 	/*将标记呀入堆栈中，直到遇见标识符*/
-	//read_to_first_identifier();
-	//deal_with_declarator();
+	read_to_first_identifier();
+	deal_with_declarator();
 	printf("\n");
 	return 0;
 }
+#endif
