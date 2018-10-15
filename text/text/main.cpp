@@ -35,7 +35,6 @@
 //#define C_PLUS_PLUS_CLASS_EXPEND3 1
 #define C_PLUS_PLUS_CLASS_EXPEND4 1
 
-
 #if C_PLUS_PLUS_CLASS_EXPEND4
 /*
  八皇后的问题（在8×8格的国际象棋上摆放八个皇后，使其不能互相攻击，即任意两个皇后都不能处于同一行、同一列或同一斜线上，如何求解？）
@@ -115,6 +114,12 @@ void main()
 #endif
 
 #if C_PLUS_PLUS_CLASS_EXPEND3
+/*
+  读取一个字符串，并输出它里面字符的所有字符？
+  现列出两种方法：
+	1.二进制形算法  
+	2.递归算法
+ */
 #if 1
 void GetPowerSet2(char nArray[], int nLength)
 {
@@ -156,58 +161,6 @@ void main()
 	memset(s, 0, len+1);
 	GetPowerSet2(str,len);
 }
-
-/*
-void string_renew_position(char *str, char *s, char len, int m, int n)
-{
-	char *buff;
-
-	buff = new char[len+1];
-	memset(buff, 0, len+1);
-
-	int i, k,l=0, j = 0;
-	for (i = 0; i < len;i++)
-	{
-		for (k = 0; k < len; k++) {
-			if (s[k] == str[i]) {
-				break;
-			}
-			if (k == len-1) {
-				s[j] = str[i];
-				j++;
-			}
-		}
-	}
-
-	for (i = 0; i < pow(2,j); i++)
-	{
-		for (k = 0; k < j; k++) {
-			if ((i >> k) & 0x01) {
-				buff[l] = s[k];
-				l++;
-			}
-		}
-		printf("%s \n", buff);
-		l = 0;
-		memset(buff, 0, len+1);
-	}
-}
-
-void main()
-{
-	char str[50] = { 0 };
-	char *s=NULL;
-	int age, len;
-	std::cin >> str >> age;
-	std::cout << str << "的年龄：" << age << std::endl;
-	printf("%s,%d \n", str, age);
-	len = strlen(str);
-	s = new char[len+1];
-	//s = (char *)malloc(sizeof(char)* len);
-	memset(s, 0, len+1);
-	string_renew_position(str,s,len, 0, 0);
-}
-*/
 #else
 void string_renew_position(char *str, char *s, char len, int m, int n)
 {
