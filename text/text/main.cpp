@@ -32,11 +32,90 @@
 //#define C_PLUS_PLUS_CLASS_EXPEND0 1
 //#define C_PLUS_PLUS_CLASS_EXPEND1 1
 //#define C_PLUS_PLUS_CLASS_EXPEND2 1
-#define C_PLUS_PLUS_CLASS_EXPEND3 1
+//#define C_PLUS_PLUS_CLASS_EXPEND3 1
+#define C_PLUS_PLUS_CLASS_EXPEND4 1
+
+
+#if C_PLUS_PLUS_CLASS_EXPEND4
+/*
+ 八皇后的问题（在8×8格的国际象棋上摆放八个皇后，使其不能互相攻击，即任意两个皇后都不能处于同一行、同一列或同一斜线上，如何求解？）
+ */
+#define true 1
+#define false 0
+#define MAX_NUM 8
+static int chessBoard[MAX_NUM][MAX_NUM] = {0};
+typedef unsigned char boolean;
+ 
+class Queen8 {
+	public:
+		boolean settleQueen(int y);
+		boolean check(int x, int y);
+		void printChessBoard(void);
+	private:
+};
+
+boolean Queen8::check(int x, int y)
+{
+	for (int i = 0; i < y; i++) {
+		if (chessBoard[x][i] == 1) {
+			return false;
+		}
+		if (x - 1 - i >= 0 && chessBoard[x - 1 - i][y - 1 - i] == 1) {
+			return false;
+		}
+		if (x + 1 + i < MAX_NUM && chessBoard[x+1+i][y - 1 - i] == 1) {
+			return false;
+		}
+	}
+	return true;
+}
+
+boolean Queen8::settleQueen(int y)
+{
+	if(y == MAX_NUM)
+		return true;
+
+	for (int i = 0; i < MAX_NUM; i++) {
+		for (int x = 0; x < MAX_NUM; x++) {
+			chessBoard[x][y] = 0;
+		}
+		
+		if (Queen8::check(i, y)) {
+			chessBoard[i][y] = 1;
+			if (Queen8::settleQueen(y + 1)) {
+				return true;
+			}
+		}
+	}
+	return false;
+	
+}
+
+void Queen8::printChessBoard(void)
+{
+	for (int j = 0; j < MAX_NUM; j++) {
+		for (int i = 0; i < MAX_NUM; i++) {
+			printf("%d ", chessBoard[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+void main()
+{
+	Queen8 queen8;		// Queen8是整个类的名字
+
+	for (int i = 0; i < MAX_NUM; i++){
+		if(queen8.settleQueen(i) == true) {
+			queen8.printChessBoard();
+		}
+	}
+}
+#endif
 
 #if C_PLUS_PLUS_CLASS_EXPEND3
 #if 1
-
 void GetPowerSet2(char nArray[], int nLength)
 {
 	int mark = 0;
@@ -77,7 +156,6 @@ void main()
 	memset(s, 0, len+1);
 	GetPowerSet2(str,len);
 }
-
 
 /*
 void string_renew_position(char *str, char *s, char len, int m, int n)
