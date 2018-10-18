@@ -33,11 +33,95 @@
 //#define C_PLUS_PLUS_CLASS_EXPEND1 1
 //#define C_PLUS_PLUS_CLASS_EXPEND2 1
 //#define C_PLUS_PLUS_CLASS_EXPEND3 1
-#define C_PLUS_PLUS_CLASS_EXPEND4 1
+//#define C_PLUS_PLUS_CLASS_EXPEND4 1
+#define C_PLUS_PLUS_CLASS_EXPEND5 1
+
+
+#if C_PLUS_PLUS_CLASS_EXPEND5
+/*
+ 给定一个数N，要求列出所有不大于N的素数？
+ 1.普通算法(判断一个数是否是素数？只需判断该数平方根以内的数据能否被整除，如果不能被整除就是素数。)
+ 2.素数筛法算法(原理：就是当i是质(素)数的时候，i的所有的倍数必然是合数。如果i已经被判断不是质数了，
+                数的倍数筛掉。那么再找到i后面的质数来把这个质)
+ */
+#if 0
+	#define N 100001
+	void main()
+	{
+		int num = 0,i,j;
+		int buf[N + 1];
+		for (i = 2; i<N; i++) {
+			for (j = 2; j <= sqrt(i); j++) {
+				if (i%j == 0) {
+					break;
+				}
+			}
+			if (j>sqrt(i)) {
+				buf[num++] = i;
+			}
+		}
+
+		printf("数据%d以内的所有素数：\n", N);
+		for (i = 0; i<num; i++) {
+			printf("%d,", buf[i]);
+		}
+	}
+#else
+#define N 100001
+	#define true 1
+	#define false 0
+	void main()
+	{
+		int i,j;
+		int buf[N+1];
+		for(i=2;i<N;i++) {
+			if(i%2) {
+				buf[i] = true;
+			}
+			else {
+				buf[i] = false;
+			}
+		}
+
+		for (i = 3; i <= sqrt(N); i++) {
+			if(buf[i] == true) {
+				for (j = i + i; j<N; j += i) {
+					buf[j] = false;
+				}
+			}
+		}
+
+		printf("数据%d以内的所有素数：\n",N);
+		for(i=0;i<N;i++) {
+			if(buf[i]==true) {
+				printf("%d,",i);
+			}
+		}
+		printf("\n");
+	}
+	/*
+	第 1 步过后2 4 ... 28 30这15个单元被标成false,其余为true。
+    第 2 步开始：
+		i=3;  由于prime[3]=true, 把prime[6], [9], [12], [15], [18], [21], [24], [27], [30]标为false.
+
+		i=4;  由于prime[4]=false,不在继续筛法步骤。
+
+		i=5;  由于prime[5]=true, 把prime[10],[15],[20],[25],[30]标为false.
+
+		i=6>sqrt(30)算法结束。
+    第 3 步把prime[]值为true的下标输出来：
+		for(i=2; i<=30; i++)
+			if(prime[i]) printf("%d ",i);
+    结果是 2 3 5 7 11 13 17 19 23 29
+	*/
+#endif
+
+#endif
 
 #if C_PLUS_PLUS_CLASS_EXPEND4
 /*
- 八皇后的问题（在8×8格的国际象棋上摆放八个皇后，使其不能互相攻击，即任意两个皇后都不能处于同一行、同一列或同一斜线上，如何求解？）
+ 八皇后的问题（在8×8格的国际象棋上摆放八个皇后，使其不能互相攻击，即任意两个皇后都不能处于同一行、同一列或同一斜线上）
+ 提问：列出所有满足八皇后条件的排列组合，并累计总个数，如何求解？
  */
 #define true 1
 #define false 0
@@ -50,8 +134,21 @@ class Queen8 {
 		boolean settleQueen(int y);
 		boolean check(int x, int y);
 		void printChessBoard(void);
+		Queen8(int i);
+		~Queen8();
 	private:
+		int conut;
 };
+
+Queen8::Queen8(int i)
+{
+	conut = i;
+}
+
+Queen8::~Queen8()
+{
+	printf("Class queen8 over\n");
+}
 
 boolean Queen8::check(int x, int y)
 {
@@ -71,10 +168,22 @@ boolean Queen8::check(int x, int y)
 
 boolean Queen8::settleQueen(int y)
 {
-	if(y == MAX_NUM)
-		return true;
+	int i=0;
 
-	for (int i = 0; i < MAX_NUM; i++) {
+	if (y == 0 && i == (MAX_NUM-1)) {
+		return true;
+	}
+
+	if (y == MAX_NUM) {
+		conut++;
+		Queen8::printChessBoard();
+		printf("八皇后摆放成功次数=%d \n", conut);
+		printf("\n");
+
+		return false;
+	}
+
+	for (i = 0; i < MAX_NUM; i++) {
 		for (int x = 0; x < MAX_NUM; x++) {
 			chessBoard[x][y] = 0;
 		}
@@ -98,18 +207,14 @@ void Queen8::printChessBoard(void)
 		}
 		printf("\n");
 	}
-	printf("\n");
+	//printf("\n");
 }
 
 void main()
 {
-	Queen8 queen8;		// Queen8是整个类的名字
+	Queen8 queen8(0);		// Queen8是整个类的名字
 
-	for (int i = 0; i < MAX_NUM; i++){
-		if(queen8.settleQueen(i) == true) {
-			queen8.printChessBoard();
-		}
-	}
+	queen8.settleQueen(0);
 }
 #endif
 
@@ -737,7 +842,7 @@ void main()
 	NODE* p_node = NULL;
 	HASH_TABLE* p_hash_table = NULL; 
 	STATUS e_status;
-	int hash_code;
+	int hash_code, test_data;
 	char input[] = "book";
 	char input2[] = "tanzheng";
 
@@ -755,6 +860,18 @@ void main()
 		e_status = delete_data_from_hash(p_hash_table, 16139);
 		e_status = delete_data_from_hash(p_hash_table, 7724);
 		if (e_status == TRUE)
+		{
+			printf("SUCCESS \n");
+		}
+		else
+		{
+			printf("FAILURE \n");
+		}
+
+		/*输入一个类型为int的数据，查找此数据是否保存在hash表中*/
+		std::cin >> test_data;
+		p_node = find_data_in_hash(p_hash_table, test_data);
+		if (p_node != NULL)
 		{
 			printf("SUCCESS \n");
 		}
