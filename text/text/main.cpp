@@ -34,11 +34,73 @@
 //#define C_PLUS_PLUS_CLASS_EXPEND2 1
 //#define C_PLUS_PLUS_CLASS_EXPEND3 1
 //#define C_PLUS_PLUS_CLASS_EXPEND4 1
-#define C_PLUS_PLUS_CLASS_EXPEND5 1
+//#define C_PLUS_PLUS_CLASS_EXPEND5 1
+#define C_PLUS_PLUS_CLASS_EXPEND6 1
 
+
+#if C_PLUS_PLUS_CLASS_EXPEND6
+/**
+ * 矩阵乘法朴素算法
+ */
+#define MAXN  50
+typedef struct mat{
+	int n, m;
+	double data[MAXN][MAXN];
+} s_matrix;
+
+int mul(mat& c, const mat& a, const mat& b){
+	int i, j, k;
+	if (a.m != b.n)
+		return 0;
+	c.n = a.n;
+	c.m = b.m;
+	for (i = 0; i < c.n; i++)
+	for (j = 0; j < c.m; j++)
+	for (c.data[i][j] = k = 0; k < a.m; k++)
+		c.data[i][j] += a.data[i][k] * b.data[k][j];
+	return 1;
+}
+void main()
+{
+	mat a_mat;
+	mat b_mat;
+	mat c_mat;
+
+
+	char ch;
+	ch = _getche();                        //不能写成getch(ch);
+	//std::cout << ch << std::endl;
+
+	memset(&a_mat, 0, sizeof(mat));
+	memset(&b_mat, 0, sizeof(mat));
+	memset(&c_mat, 0, sizeof(mat));
+	
+	for (int i = 0; i < 10; ++i)
+	{
+		std::cin >> a_mat.data[0][i];
+	}
+
+	for (int i = 0; i < 20; ++i)
+	{
+		std::cout << a_mat.data[0][i] << std::endl;
+	}
+	 
+	//int len = 0;
+	//cin >> len;
+	//int *nums = new int[len];
+	//for (int i = 0; i < len; ++i)
+	//{
+		//std::cin >> nums[i];
+	//}
+	//for (auto i = 0; i < len; ++i)
+		//cout << nums[i] << endl;
+	//std::cin >> 
+
+}
+#endif
 
 #if C_PLUS_PLUS_CLASS_EXPEND5
-/*
+/**
  给定一个数N，要求列出所有不大于N的素数？
  1.普通算法(判断一个数是否是素数？只需判断该数平方根以内的数据能否被整除，如果不能被整除就是素数。)
  2.素数筛法算法(原理：就是当i是质(素)数的时候，i的所有的倍数必然是合数。如果i已经被判断不是质数了，
@@ -67,7 +129,7 @@
 		}
 	}
 #else
-#define N 100001
+	#define N 100001
 	#define true 1
 	#define false 0
 	void main()
