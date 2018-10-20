@@ -7,6 +7,8 @@
 #include	<signal.h>
 #include	<conio.h>
 #include	<stdlib.h>
+#include	<fstream>
+#include	<typeinfo>
 
 //#define C_PLUS_PLUS_JUMP
 //#define C_PLUS_PLUS_QUOTE
@@ -66,21 +68,55 @@ void main()
 	mat b_mat;
 	mat c_mat;
 
-
-	char ch;
-	ch = _getche();                        //不能写成getch(ch);
+	char x,y;
+	int a;
+	//ch = _getch();                        //不能写成getch(ch);
 	//std::cout << ch << std::endl;
+	//_getch();
 
 	memset(&a_mat, 0, sizeof(mat));
 	memset(&b_mat, 0, sizeof(mat));
 	memset(&c_mat, 0, sizeof(mat));
 	
-	for (int i = 0; i < 10; ++i)
+	printf("请输入矩阵A：\n");
+#if 0
+	for (y = 0; y < MAXN; y++)
 	{
-		std::cin >> a_mat.data[0][i];
-	}
+		for (x = 0; x < MAXN; x++)
+		{
+			//std::cin >> a;
+			a = _getch();
+			//if ((a == '\n') || (a == 'q'))
+			if (a == '\n')
+			{
+				break;
+			}
+			a_mat.data[y][x] = a;
+			std::cout << a_mat.data[y][x] << ",";
+		}
 
-	for (int i = 0; i < 20; ++i)
+		printf("\n");
+		if (a == '\n') {
+			break;
+		}
+	}
+#else
+	using namespace std;
+
+	float data[1500][2] = { 0 };//定义一个1500*2的矩阵，用于存放数据
+	ifstream infile;//定义读取文件流，相对于程序来说是in
+	infile.open("c:\data.txt");//打开文件
+	for (int i = 0; i < 1500; i++)//定义行循环
+	{
+		for (int j = 0; j < 2; j++)//定义列循环
+		{
+			infile >> data[i][j];//读取一个值（空格、制表符、换行隔开）就写入到矩阵中，行列不断循环进行
+		}
+	}
+	infile.close();
+#endif
+	printf("请输入矩阵B：\n");
+	for (int i = 0; i < 20; i++)
 	{
 		std::cout << a_mat.data[0][i] << std::endl;
 	}
