@@ -3,12 +3,14 @@
 #include	<string.h>
 #include	<ctype.h>
 #include	<stdlib.h>
-#include	<iostream>
 #include	<signal.h>
 #include	<conio.h>
 #include	<stdlib.h>
+#include	<iostream>
 #include	<fstream>
 #include	<typeinfo>
+//#include <iostream>
+
 
 //#define C_PLUS_PLUS_JUMP
 //#define C_PLUS_PLUS_QUOTE
@@ -37,8 +39,41 @@
 //#define C_PLUS_PLUS_CLASS_EXPEND3 1
 //#define C_PLUS_PLUS_CLASS_EXPEND4 1
 //#define C_PLUS_PLUS_CLASS_EXPEND5 1
-#define C_PLUS_PLUS_CLASS_EXPEND6 1
+//#define C_PLUS_PLUS_CLASS_EXPEND6 1
+#define C_PLUS_PLUS_CLASS_EXPEND7 1
 
+#if C_PLUS_PLUS_CLASS_EXPEND7
+/**
+ * C++文件流输入和输出
+ */
+#define FILE_WORK_STATE 2
+
+using namespace std;
+int main() 
+{
+#if FILE_WORK_STATE==1
+	ofstream out("d:\out.txt");
+	if (out.is_open()) 
+	{
+		out << "This is a line.\n";
+		out << "This is another line.\n";
+		out.close();
+	}
+	return 0;
+#elif FILE_WORK_STATE==2
+	char buffer[256];
+	ifstream in("d:\out.txt");
+	if (!in.is_open())
+	{ cout << "Error opening file"; exit (1); }
+	while (!in.eof() )
+	{
+		in.getline (buffer,100);
+		cout << buffer << endl;
+	}
+	return 0;
+#endif
+}
+#endif
 
 #if C_PLUS_PLUS_CLASS_EXPEND6
 /**
@@ -105,7 +140,7 @@ void main()
 
 	float data[1500][2] = { 0 };//定义一个1500*2的矩阵，用于存放数据
 	ifstream infile;//定义读取文件流，相对于程序来说是in
-	infile.open("c:\data.txt");//打开文件
+	infile.open("d:\data.txt");//打开文件
 	for (int i = 0; i < 1500; i++)//定义行循环
 	{
 		for (int j = 0; j < 2; j++)//定义列循环
