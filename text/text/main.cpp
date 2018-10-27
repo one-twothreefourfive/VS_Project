@@ -40,19 +40,46 @@
 //#define C_PLUS_PLUS_CLASS_EXPEND4 1
 //#define C_PLUS_PLUS_CLASS_EXPEND5 1
 //#define C_PLUS_PLUS_CLASS_EXPEND6 1
-#define C_PLUS_PLUS_CLASS_EXPEND7 1
+//#define C_PLUS_PLUS_CLASS_EXPEND7 1
+#define C_PLUS_PLUS_CLASS_EXPEND8 1
+
+
+#if C_PLUS_PLUS_CLASS_EXPEND8
+/**
+ * 字符串转换为数字，并进行计算
+ */
+/* atoi example */
+#include <stdio.h>      /* printf, fgets */
+#include <stdlib.h>     /* atoi */
+
+int main()
+{
+	int i;
+	char buffer[256];
+	printf("Enter a number: ");
+	fgets(buffer, 256, stdin);
+	i = atoi(buffer);
+	printf("The value entered is %d. Its double is %d.\n", i, i * 2);
+	return 0;
+}
+#endif
 
 #if C_PLUS_PLUS_CLASS_EXPEND7
 /**
  * C++文件流输入和输出
+ * FILE_STREAM_WORK_STATE == 1：向文件内写入两行字符串
+ * FILE_STREAM_WORK_STATE == 2：从文件内读出所有的字符串，并显示
+ * FILE_STREAM_WORK_STATE == 3：读出文件的字节大小
+ * FILE_STREAM_WORK_STATE == 4：首先读出文件的字符个数，动态分配buff'，再把内容读出并显示
+ * FILE_STREAM_WORK_STATE == 5：一个文件的内容复制到另外一个文件内
  */
-#define FILE_WORK_STATE 2
-
+#define FILE_STREAM_WORK_STATE 5
 using namespace std;
+
+#if FILE_STREAM_WORK_STATE==1
 int main() 
 {
-#if FILE_WORK_STATE==1
-	ofstream out("d:\out.txt");
+	ofstream out("d:\\out.txt");
 	if (out.is_open()) 
 	{
 		out << "This is a line.\n";
@@ -60,9 +87,12 @@ int main()
 		out.close();
 	}
 	return 0;
-#elif FILE_WORK_STATE==2
+}
+#elif FILE_STREAM_WORK_STATE==2
+int main() 
+{
 	char buffer[256];
-	ifstream in("d:\out.txt");
+	ifstream in("d:\\out.bin");
 	if (!in.is_open())
 	{ cout << "Error opening file"; exit (1); }
 	while (!in.eof() )
@@ -71,8 +101,76 @@ int main()
 		cout << buffer << endl;
 	}
 	return 0;
-#endif
 }
+#elif FILE_STREAM_WORK_STATE==3
+const char * filename = "d:\\out.txt";
+
+int main () {
+	long l,m;
+	ifstream in(filename, ios::in|ios::binary);
+	l = in.tellg();
+	in.seekg (0, ios::end);
+	m = in.tellg();
+	in.close();
+	cout << "size of " << filename;
+	cout << " is " << (m-l) << " bytes.\n";
+	return 0;
+}
+#elif FILE_STREAM_WORK_STATE==4
+const char *filename = "d:\out.bin";
+int main() {
+	//std::ifstream is(filename, std::ifstream::binary);
+	ifstream is(filename, ios::in | ios::binary | ios::ate);
+	if (is) {
+		// get length of file:
+		is.seekg(0, is.end);
+		int length = is.tellg();
+		is.seekg(0, is.beg);
+
+		// allocate memory:
+		char * buffer = new char[length];
+
+		// read data as a block:
+		is.read(buffer, length); 
+
+		is.close();
+
+		// print content:
+		std::cout.write(buffer, length);
+
+		delete[] buffer;
+	}
+
+	return 0;
+}
+#elif FILE_STREAM_WORK_STATE==5
+int main () {
+	std::ifstream infile("d:\\test.txt", std::ifstream::binary);
+	std::ofstream outfile("d:\\new.txt", std::ofstream::binary);
+
+	// get size of file
+	infile.seekg (0,infile.end);
+	long size = infile.tellg();
+	infile.seekg (0);
+
+	// allocate memory for file content
+	char* buffer = new char[size];
+
+	// read content of infile
+	infile.read (buffer,size);
+
+	// write to outfile
+	outfile.write (buffer,size);
+
+	// release dynamically-allocated memory
+	delete[] buffer;
+
+	outfile.close();
+	infile.close();
+	return 0;
+}
+#endif
+
 #endif
 
 #if C_PLUS_PLUS_CLASS_EXPEND6
