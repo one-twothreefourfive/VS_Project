@@ -41,8 +41,55 @@
 //#define C_PLUS_PLUS_CLASS_EXPEND5 1
 //#define C_PLUS_PLUS_CLASS_EXPEND6 1
 //#define C_PLUS_PLUS_CLASS_EXPEND7 1
-#define C_PLUS_PLUS_CLASS_EXPEND8 1
+//#define C_PLUS_PLUS_CLASS_EXPEND8 1
+#define C_PLUS_PLUS_CLASS_EXPEND9 1
 
+#if C_PLUS_PLUS_CLASS_EXPEND9
+unsigned char calcrc8_1byte(unsigned char abyte)
+{
+	unsigned char i, crc_1byte;
+	crc_1byte = 0;
+	for (i = 0; i < 8; i++)
+	{
+		if (((crc_1byte^abyte) & 0x01))
+		{
+			crc_1byte ^= 0x18;
+			crc_1byte >>= 1;
+			crc_1byte |= 0x80;
+		}
+		else
+			crc_1byte >>= 1;
+		abyte >>= 1;
+	}
+	return crc_1byte;
+}
+
+/************************************************************************************************
+*                                           Function Prototypes
+*unsigned char calcrc8_bytes(unsigned char *p,unsigned char len)
+*功能     计算一个数组的CRC8
+*多项式   g(x)=x8+x5+x4+1   g(x)=0x31
+*返回值   前一个CRC8结果，与下一个数据异或，再做CRC8计算，以此类推，结果为一个字节
+*************************************************************************************************/
+unsigned char calcrc8_bytes(unsigned char *p, unsigned char len)
+{
+	unsigned char crc = 0;
+	while (len--)
+	{
+		crc = calcrc8_1byte(crc^*p++);
+	}
+	return crc;
+}
+
+unsigned char buffer[2] = { 0x40, 0x50 };
+int main()
+{
+	int ret;
+	ret = calcrc8_bytes(buffer, 1);
+	printf("%d \n", ret);
+	return 0;
+}
+#endif
 
 #if C_PLUS_PLUS_CLASS_EXPEND8
 /**
